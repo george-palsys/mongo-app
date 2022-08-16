@@ -1,19 +1,14 @@
 pipeline {
     agent {label 'slave01'}
     stages {
-        stage('Build') {
-            steps {
-                echo 'Building..'
+        stage('SonarQube Analysis') {
+          withSonarQubeEnv(installationName: 'SonarQube Server', credentialsId: 'SonarqubeToken') {
+            sh "mvn clean verify sonar:sonar -Dsonar.projectKey=mongo-app"
             }
         }
         stage('Test') {
             steps {
                 echo 'Testing..'
-            }
-        }
-        stage('Deploy') {
-            steps {
-                echo 'Deploying....'
             }
         }
     }
