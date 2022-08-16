@@ -1,0 +1,7 @@
+/mongo-app/MongoDBWebapp/src/main/java/com/journaldev/mongodb/converter/PersonConverter.java
+/mongo-app/MongoDBWebapp/src/main/java/com/journaldev/mongodb/servlets/AddPersonServlet.java
+/mongo-app/MongoDBWebapp/src/main/java/com/journaldev/mongodb/model/Person.java
+/mongo-app/MongoDBWebapp/src/main/java/com/journaldev/mongodb/servlets/EditPersonServlet.java
+/mongo-app/MongoDBWebapp/src/main/java/com/journaldev/mongodb/servlets/DeletePersonServlet.java
+/mongo-app/MongoDBWebapp/src/main/java/com/journaldev/mongodb/dao/MongoDBPersonDAO.java
+/mongo-app/MongoDBWebapp/src/main/java/com/journaldev/mongodb/listener/MongoDBContextListener.java
