@@ -25,7 +25,7 @@ pipeline {
               Proceed build with this link: '${env.BUILD_URL}input/Testid/proceedEmpty'""",
               recipientProviders: [[$class: 'DevelopersRecipientProvider']]
             )
-            input message: 'Approve build', submitterParameter: 'admin', id: 'Testid' 
+            input id: 'Test_id', message: 'Approve build', parameters: [text(defaultValue: 'valueOfParam1', name: 'param1'), text(defaultValue: 'valueOfParam1', name: 'param2')], submitterParameter: 'admin'
           } 
        }
 
