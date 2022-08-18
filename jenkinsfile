@@ -17,8 +17,8 @@ pipeline {
         }
         stage("Send email notification to approver for uploading the artifacts") {
           steps{
-            emailext body: 'Approve build with link', subject: 'Approve Build', to: 'georgepalsys@gmail.com'
-            input message: 'Approve build?', submitter: 'admin, root, jenkins'
+            emailext body: 'Approve build with link', subject: 'Approve Build', to: 'approver@palsys.demo.com.tw'
+            input message: 'Approve build?', submitter: 'admin'
     }
 }
 
