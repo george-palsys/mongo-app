@@ -17,15 +17,15 @@ pipeline {
         }
         stage("Send email notification to approver for uploading the artifacts") {
           steps{
+            input message: 'Approve build', submitterParameter: 'admin', id: 'Testid'
             emailext (
               subject: "Waiting for your Approval! Job: '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
               body: """STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':
               Check console output at '${env.BUILD_URL}input/'
-              Aborting build with this link: '${env.BUILD_URL}stop'
-              Proceed build with this link: '${env.BUILD_URL}proceedEmpty'""",
+              Aborting build with this link: '${env.BUILD_URL}input/${INPUT_ID}/abort'
+              Proceed build with this link: '${env.BUILD_URL}input/${INPUT_ID}/proceedEmpty'""",
               recipientProviders: [[$class: 'DevelopersRecipientProvider']]
             )
-            input message: 'Approve build', submitterParameter: 'admin' 
           } 
        }
 
