@@ -20,7 +20,7 @@ pipeline {
             emailext (
               subject: "Waiting for your Approval! Job: '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
               body: """STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':
-              Check console output at '${env.BUILD_URL}'${env.JOB_NAME}+'/input/'""",
+              Check console output at '${env.BUILD_URL}'${env.JOB_NAME}'/input/'""",
               recipientProviders: [[$class: 'DevelopersRecipientProvider']]
             )
             input message: 'Approve build', submitterParameter: 'admin' 
