@@ -4,7 +4,7 @@ pipeline {
         stage('SonarQube Analysis') {
           steps {
             dir("/workspace/workspace/DevSecOps-demo/MongoDBWebapp") {
-          withSonarQubeEnv(installationName: 'SonarQube Server', credentialsId: 'SONARQUBE_TOKEN') {
+          withSonarQubeEnv(installationName: 'SonarQube Server', credentialsId: 'SonarqubeToken') {
             sh "mvn clean verify sonar:sonar -Dsonar.projectKey=mongo-app"
             }
         }
