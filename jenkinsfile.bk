@@ -1,0 +1,33 @@
+pipeline {
+    agent {label 'slave01'}
+    stages {
+        stage('SonarQube Analysis') {
+          steps {
+            dir("/workspace/workspace/DevSecOps-demo/MongoDBWebapp") {
+          withSonarQubeEnv(installationName: 'SonarQube Server', credentialsId: 'SonarqubeToken') {
+            sh "mvn clean verify sonar:sonar -Dsonar.projectKey=mongo-app"
+            }
+        }
+    }
+}
+        stage('Test') {
+            steps {
+                echo 'Testing..'
+            }
+        }
+        stage("Send email notification to approver for uploading the artifacts") {
+          steps{
+            emailext (
+              subject: "Waiting for your Approval! Job: '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
+              body: """STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':
+              Check console output at '${env.BUILD_URL}input/'
+              Aborting build with this link: '${env.BUILD_URL}input/testid/abort'
+              Proceed build with this link: '${env.BUILD_URL}input/testid/proceedEmpty'""",
+              recipientProviders: [[$class: 'DevelopersRecipientProvider']]
+            )
+            input id: 'test_id', message: 'Approve build', submitterParameter: 'admin'
+          } 
+       }
+
+    }
+}
