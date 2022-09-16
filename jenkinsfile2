@@ -9,8 +9,8 @@ pipeline {
                     /opt/cov-analysis-linux64-2022.6.1/bin/cov-configure --java
                     /opt/cov-analysis-linux64-2022.6.1/bin/cov-build --dir /workspace/workspace/DevSecOps-demo/CovWorkSpace mvn clean package
                     /opt/cov-analysis-linux64-2022.6.1/bin/cov-analyze --dir /workspace/workspace/DevSecOps-demo/CovWorkSpace
-                    /opt/cov-analysis-linux64-2022.6.1/bin/cov-manage-im --host 10.107.85.178 --mode streams --add --set name:DevSecOps -user $username -password $password
-                    /opt/cov-analysis-linux64-2022.6.1/bin/cov-manage-im --host 10.107.85.178 --mode projects --add --set name:Mongodb --insert stream:DevSecOps  -user $username -password $password
+                    /opt/cov-analysis-linux64-2022.6.1/bin/cov-manage-im --host 10.107.85.178 --mode streams --add --set name:DevSecOps -user $username -password $password > /dev/null 2>&1
+                    /opt/cov-analysis-linux64-2022.6.1/bin/cov-manage-im --host 10.107.85.178 --mode projects --add --set name:Mongodb --insert stream:DevSecOps  -user $username -password $password > /dev/null 2>&1
                     /opt/cov-analysis-linux64-2022.6.1/bin/cov-commit-defects --host host 10.107.85.178 --stream DevSecOps --dir /software/workspace --user $username --password $password
                 '''
               }
