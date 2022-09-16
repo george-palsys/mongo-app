@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage ('Coverity Analysis') {
             steps {
-                dir("/workspace/workspace/Synopsys coverity/MongoDBWebapp")
+                dir("/workspace/workspace/Synopsys\ coverity/MongoDBWebapp")
                 withCredentials([usernamePassword(credentialsId: 'coverity', passwordVariable: 'password', usernameVariable: 'username')])             {
                sh '''
                     /opt/cov-analysis-linux64-2022.6.1/bin/cov-configure --java
