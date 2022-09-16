@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage ('Coverity Analysis') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'coverity', passwordVariable: 'password', usernameVariable: 'username')]){
+                withCredentials([usernamePassword(credentialsId: 'coverity', passwordVariable: 'password', usernameVariable: 'username')])             {
                sh '''
                     cov-configure --java
                     cov-build --dir /workspace/workspace/DevSecOps-demo/CovWorkSpace mvn clean package
@@ -14,7 +14,7 @@ pipeline {
                 '''
               }
             }
-
+          }
 
 
         stage('Test') {
