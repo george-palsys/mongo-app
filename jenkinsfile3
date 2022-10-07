@@ -56,12 +56,12 @@ pipeline {
                 sh 'podman build -t quay.online.ocp4.com/admin/mongoapp .'
                 }
             }
-			}
+			
         stage("Upload container images") {
             steps {
                 sh 'podman push quay.online.ocp4.com/admin/mongoapp'  
             }
          }
 
-	
+	}
 }
