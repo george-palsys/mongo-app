@@ -70,11 +70,9 @@ pipeline {
 	}		
         stage("Upload container images") {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'quay', passwordVariable: 'password', usernameVariable: 'username')]) {
                 sh '''
-                    podman push quay.ocp49.redhat.poc/admin/mongoapp -u $username -p $password
+                    podman push quay.ocp49.redhat.poc/quayadmin/mongoapp
                 '''
-              }
             }
          }
 
