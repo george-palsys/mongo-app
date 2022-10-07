@@ -53,7 +53,7 @@ pipeline {
         }
         stage('Build container images') { 
             steps {
-              dir("/"){
+              dir("/workspace/workspace/Add\ Quay/"){
                 sh 'podman build -t quay.ocp49.redhat.poc/admin/mongoapp .'
                 }
             }
