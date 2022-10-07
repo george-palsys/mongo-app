@@ -1,0 +1,68 @@
+pipeline {
+    agent {label 'slave01'}
+    stages {
+        stage ('Coverity Analysis') {
+            steps {
+                dir("/workspace/workspace/Synopsys coverity/MongoDBWebapp"){
+                withCredentials([usernamePassword(credentialsId: 'coverity', passwordVariable: 'password', usernameVariable: 'username')])             {
+               sh '''
+                    /opt/cov-analysis-linux64-2022.6.1/bin/cov-configure --java
+                    /opt/cov-analysis-linux64-2022.6.1/bin/cov-build --dir /workspace/workspace/DevSecOps-demo/CovWorkSpace mvn clean package
+                    /opt/cov-analysis-linux64-2022.6.1/bin/cov-analyze --dir /workspace/workspace/DevSecOps-demo/CovWorkSpace
+                    /opt/cov-analysis-linux64-2022.6.1/bin/cov-manage-im --host 10.107.85.178 --mode streams --add --set name:DevSecOps -user $username -password $password || true
+                    /opt/cov-analysis-linux64-2022.6.1/bin/cov-manage-im --host 10.107.85.178 --mode projects --add --set name:Mongodb --insert stream:DevSecOps  -user $username -password $password || true
+                    /opt/cov-analysis-linux64-2022.6.1/bin/cov-commit-defects --host 10.107.85.178 --stream DevSecOps --dir /workspace/workspace/DevSecOps-demo/CovWorkSpace --user $username --password $password
+                '''
+              }
+            }
+          }
+        }
+
+        stage('Test') {
+            steps {
+                echo 'Testing..'
+            }
+        }
+        stage("Send email notification to approver for uploading the artifacts") {
+          steps{
+            emailext (
+              subject: "Waiting for your Approval! Job: '${env.JOB_NAME} [${env.BUILD_NUMBER}]'",
+              body: """STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]':
+              Check console output at '${env.BUILD_URL}input/'
+              Aborting build with this link: '${env.BUILD_URL}input/testid/abort'
+              Proceed build with this link: '${env.BUILD_URL}input/testid/proceedEmpty'""",
+              recipientProviders: [[$class: 'DevelopersRecipientProvider']]
+            )
+            input id: 'test_id', message: 'Approve build', submitterParameter: 'admin'
+          } 
+       }
+        stage("Publish to Nexus Repository Manager") {
+            steps {
+               nexusArtifactUploader artifacts: [[artifactId: 'MongoDBWebapp', classifier: '', file: './MongoDBWebapp/target/MongoDBWebapp.war', type: 'war']], credentialsId: 'nexus-uploader', groupId: 'MongoDBWebapp', nexusUrl: '10.107.85.168:8081/repository/mongodb_artifact/', nexusVersion: 'nexus3', protocol: 'http', repository: 'mongodb_artifact', version: '0.0.1-SNAPSHOT'
+           }
+	}
+
+        stage ('login quay') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'quay', passwordVariable: 'password', usernameVariable: 'username')]) {
+                sh '''
+                    podman login quay.online.ocp4.com --tls-verify=false -u $username -p $password
+                '''
+              } 
+            }
+        }
+        stage('Build container images') { 
+            steps {
+                sh 'podman build -t quay.online.ocp4.com/admin/mongoapp .'
+                }
+            }
+			}
+        stage("Upload container images") {
+            steps {
+                sh 'podman push quay.online.ocp4.com/admin/mongoapp'  
+            }
+         }
+
+	
+    }
+}
