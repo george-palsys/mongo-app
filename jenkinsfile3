@@ -46,7 +46,7 @@ pipeline {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'quay', passwordVariable: 'password', usernameVariable: 'username')]) {
                 sh '''
-                    podman login quay.online.ocp4.com --tls-verify=false -u $username -p $password
+                    podman quay.ocp49.redhat.poc --tls-verify=false -u $username -p $password
                 '''
               } 
             }
