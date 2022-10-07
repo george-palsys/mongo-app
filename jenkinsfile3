@@ -53,10 +53,11 @@ pipeline {
         }
         stage('Build container images') { 
             steps {
-                sh 'podman build -t quay.ocp49.redhat.poc/admin/mongoapp ../.'
+              dir("/"){
+                sh 'podman build -t quay.ocp49.redhat.poc/admin/mongoapp .'
                 }
             }
-			
+	}		
         stage("Upload container images") {
             steps {
                 sh 'podman push quay.ocp49.redhat.poc/admin/mongoapp'  
