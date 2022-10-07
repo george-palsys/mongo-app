@@ -54,6 +54,7 @@ pipeline {
         stage('Build container images') { 
             steps {
                 sh 'podman build -t quay.online.ocp4.com/admin/mongoapp .'
+                sh 'pwd'
                 }
             }
 			
