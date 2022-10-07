@@ -53,7 +53,8 @@ pipeline {
         }
         stage('Build container images') { 
             steps {
-              dir(/workspace/workspace/Add Quay){
+              dir(/Add Quay){
+                sh 'pwd'
                 sh 'podman build -t quay.online.ocp4.com/admin/mongoapp .'
                 }
             }
